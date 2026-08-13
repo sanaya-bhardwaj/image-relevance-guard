@@ -3,5 +3,4 @@
 *.log
 dist/
 .DS_Store
-corpus/*.jpg
-corpus/*.png
+corpus/*
