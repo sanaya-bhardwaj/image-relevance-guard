@@ -33,6 +33,11 @@ best of a bad set.
 No frontend UI — API + a plain results table is sufficient. No multi-tenant
 auth; this is a single-operator internal tool.
 
+## Corpus
+Not committed (see .gitignore). To reproduce:
+1. Download ~10 images each of: fox, wolf, dog, bear, deer from Unsplash/Pexels into `corpus/`
+2. Run `node scripts/convert-avif.js` if any are .avif (converts + cleans up)
+
 ## Status
 Phase 1 — design in progress. 
 
