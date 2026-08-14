@@ -2,7 +2,7 @@ const path = require('path');
 const { classifyImage } = require('../src/services/visionService');
 
 async function test() {
-  const imagePath = path.join(__dirname, '..', 'corpus', 'fox1.jpg');
+  const imagePath = path.join(__dirname, '..', 'corpus', 'wolf1.jpg');
   console.log('Classifying:', imagePath);
 
   const result = await classifyImage(imagePath);

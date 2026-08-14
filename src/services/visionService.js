@@ -4,6 +4,7 @@ const fs = require('fs');
 const { parseImageTags } = require('../schemas/imageTag.schema');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const MODEL_NAME = 'gemini-flash-latest';
 
 const TAGGING_PROMPT = `
 Analyze this image and respond with ONLY a JSON object (no markdown, no code fences, no extra text) in exactly this shape:
@@ -26,14 +27,35 @@ function imageToGenerativePart(filePath, mimeType) {
   };
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function callGeminiWithRetry(model, promptParts, maxRetries = 4) {
+  let lastError;
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const result = await model.generateContent(promptParts);
+      return result;
+    } catch (err) {
+      lastError = err;
+      const isRetryable = err.status === 503 || err.status === 429;
+      if (!isRetryable || attempt === maxRetries) throw err;
+
+      const backoffMs = 1000 * Math.pow(2, attempt - 1); // 1s, 2s, 4s, 8s
+      console.log(`Attempt ${attempt} failed (${err.status}), retrying in ${backoffMs}ms...`);
+      await sleep(backoffMs);
+    }
+  }
+  throw lastError;
+}
+
 async function classifyImage(filePath, mimeType = 'image/jpeg') {
-  const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
+  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
   const imagePart = imageToGenerativePart(filePath, mimeType);
 
-  const result = await model.generateContent([TAGGING_PROMPT, imagePart]);
+  const result = await callGeminiWithRetry(model, [TAGGING_PROMPT, imagePart]);
   const rawText = result.response.text();
-
-  // Gemini sometimes wraps JSON in ```json fences despite instructions — strip them
   const cleaned = rawText.replace(/```json|```/g, '').trim();
 
   let parsedJson;
