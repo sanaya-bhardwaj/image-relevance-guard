@@ -4,7 +4,7 @@ const fs = require('fs');
 const { parseImageTags } = require('../schemas/imageTag.schema');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const MODEL_NAME = 'gemini-flash-latest';
+const MODEL_NAME = 'gemini-3.1-flash-lite';
 
 const TAGGING_PROMPT = `
 Analyze this image and respond with ONLY a JSON object (no markdown, no code fences, no extra text) in exactly this shape:
