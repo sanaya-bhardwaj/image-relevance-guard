@@ -31,3 +31,39 @@ CREATE TABLE IF NOT EXISTS ai_call_costs (
   estimated_cost_usd NUMERIC(10,6),
   created_at TIMESTAMPTZ DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS posts (
+  id SERIAL PRIMARY KEY,
+  title TEXT NOT NULL,
+  body TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS image_vectors (
+  id SERIAL PRIMARY KEY,
+  image_id INTEGER NOT NULL REFERENCES images(id) ON DELETE CASCADE UNIQUE,
+  embedding FLOAT8[] NOT NULL,
+  model_used TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS post_vectors (
+  id SERIAL PRIMARY KEY,
+  post_id INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE UNIQUE,
+  embedding FLOAT8[] NOT NULL,
+  model_used TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS suggestions (
+  id SERIAL PRIMARY KEY,
+  post_id INTEGER NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+  image_id INTEGER REFERENCES images(id) ON DELETE SET NULL, -- null when guard rejects everything
+  similarity_score NUMERIC(6,5),
+  guard_verdict TEXT NOT NULL, -- 'approved' | 'rejected' | 'no_match'
+  reason TEXT,
+  status TEXT NOT NULL DEFAULT 'pending', -- pending | approved | rejected (human review)
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_suggestions_post_id ON suggestions(post_id);
