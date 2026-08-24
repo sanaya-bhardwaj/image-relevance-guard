@@ -47,7 +47,7 @@ async function processPendingImages() {
     await pool.query(`UPDATE images SET status = 'processing' WHERE id = $1`, [img.id]);
 
     try {
-      const result = await classifyImage(img.file_path);
+      const result = await classifyImage(img.file_path, 'image/jpeg', img.id);
 
       if (!result.valid) {
         console.log(`  -> Invalid model output, marking failed: ${JSON.stringify(result.errors)}`);
