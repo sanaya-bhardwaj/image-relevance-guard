@@ -1,13 +1,12 @@
 require('dotenv').config();
 const express = require('express');
-const { Pool } = require('pg');
+const { pool } = require('./db');
+
+const postsRouter = require('./routes/posts');
+const suggestionsRouter = require('./routes/suggestions');
 
 const app = express();
 app.use(express.json());
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
 
 app.get('/health', async (req, res) => {
   try {
@@ -17,6 +16,9 @@ app.get('/health', async (req, res) => {
     res.status(500).json({ status: 'error', db: 'unreachable', error: err.message });
   }
 });
+
+app.use('/posts', postsRouter);
+app.use('/suggestions', suggestionsRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
