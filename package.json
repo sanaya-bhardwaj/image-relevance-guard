@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
-    "test": "jest"
+  "dev": "nodemon src/index.js",
+  "start": "node src/index.js",
+  "test": "jest",
+  "seed": "node scripts/migrate.js && node scripts/run-batch.js && node scripts/embed-images.js && node scripts/seed-eval-posts.js"
   },
   "repository": {
     "type": "git",
