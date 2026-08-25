@@ -1,13 +1,13 @@
 const { parseImageTags } = require('../src/schemas/imageTag.schema');
 
 describe('Image tag schema validation', () => {
-  test('accepts valid tag data', () => {
+    test('accepts valid tag data', () => {
     const result = parseImageTags({
       subject: 'red fox',
       category: 'animal',
       attributes: ['orange fur', 'forest'],
       caption: 'A red fox in a forest',
-      confidence: 0.95,
+      confidence: 0.995,
     });
     expect(result.valid).toBe(true);
     expect(result.flagged).toBe(false);
