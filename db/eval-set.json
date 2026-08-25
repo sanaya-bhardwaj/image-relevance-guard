@@ -1,0 +1,27 @@
+[
+  {
+    "postId": 4,
+    "expectedSubject": "fox",
+    "title": "The Secret Life of Red Foxes"
+  },
+  {
+    "postId": 5,
+    "expectedSubject": "wolf",
+    "title": "Understanding Gray Wolf Packs"
+  },
+  {
+    "postId": 6,
+    "expectedSubject": "dog",
+    "title": "Why Dogs Make Great Companions"
+  },
+  {
+    "postId": 7,
+    "expectedSubject": "bear",
+    "title": "Grizzly Bears of North America"
+  },
+  {
+    "postId": 8,
+    "expectedSubject": "deer",
+    "title": "The Majestic Red Deer Stag"
+  }
+]
