@@ -115,6 +115,11 @@ tuning does not affect that safety check.
   wouldn't generalize to arbitrary subject matter without extension.
 - No frontend; review workflow is API-only, verified via REST calls.
 - 50-image corpus, single vision + single embedding model, per § 7 scope.
+- Confidence-flag threshold set to 0.99 rather than a lower default — Gemini
+  3.1 Flash-Lite runs highly confident (0.95-1.0) even on deliberately
+  ambiguous test images (a watercolor painting, a hard-to-classify subject),
+  so 0.99 reflects this model's actual calibration on the corpus rather than
+  an arbitrary guess.
 
 ## Tests
 
