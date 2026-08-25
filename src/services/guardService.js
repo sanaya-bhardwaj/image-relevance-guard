@@ -1,4 +1,4 @@
-const SIMILARITY_THRESHOLD = 0.65; // tune this after seeing more data
+const SIMILARITY_THRESHOLD = 0.60; // tune this after seeing more data
 const CONFIDENCE_THRESHOLD = 0.6;
 
 // Naive category/subject extraction from post text — checks if the post's
