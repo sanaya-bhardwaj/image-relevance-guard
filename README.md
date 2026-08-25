@@ -13,7 +13,8 @@ photo for a fox article) instead of silently picking the best of a bad set.
 
 ## Architecture
 
-​```
+​
+``` 
 Images ─(batch job)─► Gemini Vision ─► {tags, caption, confidence} ─► image_tags
         └─► embed(caption) ────────────────────────────────────────► image_vectors
 
@@ -25,8 +26,9 @@ GET /posts/:id/images
               ├─► Approved match (ranked, with reason)
               └─► "No confident match" + reason
                     └─► Review API: approve / reject
-​```
 
+```
+​
 Layers: `src/services/` (vision, embedding, ranking, guard, matching — pure
 logic) → `src/routes/` (Express HTTP layer) → `src/db.js` (Postgres via
 Supabase). Business logic never imports Express directly, so the DB or LLM
