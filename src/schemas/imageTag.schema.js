@@ -15,7 +15,7 @@ function parseImageTags(rawJson) {
     return { valid: false, errors: result.error.flatten(), data: null };
   }
   // Low-confidence still "valid" shape-wise, but flagged for review
-  const flagged = result.data.confidence < 0.99; // tune this threshold later
+  const flagged = result.data.confidence < 0.99; // see README "Limitations" for threshold rationale
   return { valid: true, flagged, data: result.data };
 }
 
