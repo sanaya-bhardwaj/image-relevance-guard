@@ -13,18 +13,19 @@ photo for a fox article) instead of silently picking the best of a bad set.
 
 ## Architecture
 
+​```
 Images ─(batch job)─► Gemini Vision ─► {tags, caption, confidence} ─► image_tags
-└─► embed(caption) ──────────────────────────────────────► image_vectors
+        └─► embed(caption) ────────────────────────────────────────► image_vectors
 
 Posts ──────────────────► embed(title + body) ────────────────────► post_vectors
 
 GET /posts/:id/images
-└─► Similarity Ranking (cosine: post_vector × image_vectors)
-└─► Mismatch Guard (category check + confidence + similarity threshold)
-├─► Approved match (ranked, with reason)
-└─► "No confident match" + reason
-└─► Review API: approve / reject
-
+  └─► Similarity Ranking (cosine: post_vector × image_vectors)
+        └─► Mismatch Guard (category check + confidence + similarity threshold)
+              ├─► Approved match (ranked, with reason)
+              └─► "No confident match" + reason
+                    └─► Review API: approve / reject
+​```
 
 Layers: `src/services/` (vision, embedding, ranking, guard, matching — pure
 logic) → `src/routes/` (Express HTTP layer) → `src/db.js` (Postgres via
